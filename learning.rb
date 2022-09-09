@@ -39,6 +39,6 @@ def sizeof_string_input(string)
 end
 #Testing inputs. Had to change to run on terminal because reading inputs otherwise does not work
 puts("Enter input")
-$input = gets.chomp
-sizeof_string_input($input)
+#$input = gets.chomp
+sizeof_string_input("+++++++++++++++++++++++++++++")
 
