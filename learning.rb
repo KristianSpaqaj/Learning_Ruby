@@ -17,16 +17,28 @@ greeter = Greeter.new("lars")
 greeter.say_hi
 greeter.say_bye
 #How to make global variables and write if statements
-$x = 55
-$f = 6
-if $x < $f
+x = 7
+f = 6
+$test = "hjasdjasdaskdha kshas a "
+if x < f
     puts "yes"
 else
-    puts " no"
+    puts "no"
 end
 #Writing while loop
-while $f < $x
-    puts "testing #{$f}"
-    $f += 1
+while f < x
+    puts "testing #{f}"
+    f += 1
 end
+def sizeof_string_input(string)
+    if string.empty?
+        puts("String is empty")
+    else
+        puts(string.size)
+    end
+end
+#Testing inputs. Had to change to run on terminal because reading inputs otherwise does not work
+puts("Enter input")
+$input = gets.chomp
+sizeof_string_input($input)
 
