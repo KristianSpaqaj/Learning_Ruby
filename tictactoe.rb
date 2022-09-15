@@ -1,40 +1,101 @@
-board = ["","","","","","","","",""]
-def draw_board(board)
-    puts "#{board[0]} | #{board[1]} | #{board[2]}"
-    puts "---------"
-    puts "#{board[3]} | #{board[4]} | #{board[5]}"
-    puts "---------"
-    puts "#{board[6]} | #{board[7]} | #{board[8]}"
-end
-def pos_index(board, char, pos)
-    pos -= 1
-    board[pos] = char
-    draw_board(board)
-end
-win_comb = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
-#afslut funktion
-def won?(board,win_comb)
-    win_comb.each do |f|
-    end
-end
+class TicTacToe
+    attr_accessor :board
 
-def board_filled?(board)
-    board.each do |spaces|
-        if spaces.empty?
-            return false
+    def initialize
+        @board = ["","","","","","","","",""]
+    end
+    WIN_COMBOS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+    def draw_board
+        puts "#{@board[0]} | #{@board[1]} | #{@board[2]}"
+        puts "---------"
+        puts "#{@board[3]} | #{@board[4]} | #{@board[5]}"
+        puts "---------"
+        puts "#{@board[6]} | #{@board[7]} | #{@board[8]}"
+    end
+    def input_index(input)
+        input.to_i - 1
+    end
+    def move(position, token = "X")
+        @board[position] = token
+    end
+    
+    def position_taken?(input)
+        @board[input] == "X" || @board[input] == "O"
+    end
+    def valid_move?(input)
+        input.between?(0,8) && !position_taken?(input)
+    end
+    
+    def turn
+        puts("Choose a place from 1 to 9")
+        place = gets.strip
+        place = input_index(place)
+        if valid_move?(place)
+            move(place,current_player)
+        else
+            turn
+        end
+        draw_board
+    end
+    
+    def turn_count
+        rounds = 0
+        @board.each do |i|
+            if i == "X" || i == "O"
+                rounds += 1
+            end
+        end
+        return rounds
+    end
+    
+    def current_player
+        player = nil
+        if turn_count() % 2 == 0
+            player = "X"
+        else
+            player = "O"
+        end
+        return player
+    end
+    
+    def won?
+        WIN_COMBOS.detect do |f|
+            @board[f[0]] == @board[f[1]] &&
+            @board[f[1]] == @board[f[2]] &&
+            position_taken?(f[0])
         end
     end
-    return true
-end
+    
+    def full?
+        turn_count == 9
+    end
+    
+    def draw?
+        !won? && full?
+    end
+    
+    def over?
+        won? || full? || draw?
+    end
+    
+    def winner
+        won = ""
+        if winner = won?
+            won = @board[winner.first]
+        end
+    end
 
-def switch_player(player)
-    return "O" if player == "X" else "O"
+    def play
+        until over?
+            turn
+        end
+        if won?
+            winner = winner()
+            puts("#{winner} WON!")
+        elsif draw?
+            puts("It's a draw")
+        end
+    end
 end
-
-draw_board(board)
-puts "Choose character: X or O"
-char = gets.chomp
-puts "Choose where to place character on the board"
-#pos = gets.chomp.to_i
-#puts "#{board[pos.to_i]}"
-# while loop: en hel loop for en spiller, derefter looper den til den næste
+game = TicTacToe.new
+game.play
